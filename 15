@@ -1,0 +1,50 @@
+CREATE DATABASE studentdb;
+USE studentdb;
+CREATE TABLE student (  rollno INT,
+    name VARCHAR(50),
+    address VARCHAR(100)
+);
+INSERT INTO student VALUES (101, 'Ravi', 'Guntur');
+INSERT INTO student VALUES (102, 'Sita', 'Vijayawada');
+JSP Program (sqltag.jsp)
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<html>
+<head>
+    <title>JSTL SQL Tag Demo</title>
+</head>
+
+<body>
+
+<h2>Student Records Using JSTL SQL Tag</h2>
+
+<!-- Set DataSource -->
+<sql:setDataSource var="db"
+    driver="com.mysql.cj.jdbc.Driver"
+    url="jdbc:mysql://localhost:3306/studentdb"
+    user="root"
+    password="password" />
+
+<!-- Execute Query -->
+<sql:query var="rs" dataSource="${db}">
+    SELECT * FROM student
+</sql:query>
+
+<!-- Display Table -->
+<table border="1">
+<tr>
+    <th>Roll No</th>
+    <th>Name</th>
+    <th>Address</th>
+</tr>
+<c:forEach var="row" items="${rs.rows}">
+<tr>
+    <td>${row.rollno}</td>
+    <td>${row.name}</td>
+    <td>${row.address}</td>
+</tr>
+</c:forEach>
+</table>
+</body>
+</html>
